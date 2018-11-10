@@ -57,4 +57,7 @@ dependencies {
 	// Database
 	compile('org.hibernate:hibernate-entitymanager:' + hibernateVersion)
 	compile('mysql:mysql-connector-java:' + mysqlConnectorVersion)
+	
+	// Other
+	compile('org.reflections:reflections:0.9.11')
 }

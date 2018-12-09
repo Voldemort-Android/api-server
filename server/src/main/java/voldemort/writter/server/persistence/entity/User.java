@@ -1,4 +1,4 @@
-package server.persistence.entity;
+package voldemort.writter.server.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;

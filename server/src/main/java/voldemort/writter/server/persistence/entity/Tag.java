@@ -1,24 +1,20 @@
-package server.persistence.entity;
+package voldemort.writter.server.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "comments")
-public class Comment implements Serializable {
+@Table(name = "tags")
+public class Tag implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -26,16 +22,7 @@ public class Comment implements Serializable {
     private Long id;
 	
 	@Column(nullable = false)
-    private String text;
-	
-	private int points = 0;
-	
-	@ManyToOne(targetEntity = Story.class)
-	private Story story;
-	
-	@OneToMany
-    @JoinColumn(name = "nested_comments")
-    private Set<Comment> nestedComments;
+    private String name;
 	
 	private boolean enabled = true;
 	
@@ -45,7 +32,7 @@ public class Comment implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date modified;
     
-    public Comment()
+    public Tag()
     {
     }
 
@@ -57,36 +44,12 @@ public class Comment implements Serializable {
 		this.id = id;
 	}
 
-	public String getText() {
-		return text;
+	public String getName() {
+		return name;
 	}
 
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	public Story getStory() {
-		return story;
-	}
-
-	public void setStory(Story story) {
-		this.story = story;
-	}
-
-	public Set<Comment> getNestedComments() {
-		return nestedComments;
-	}
-
-	public void setNestedComments(Set<Comment> nestedComments) {
-		this.nestedComments = nestedComments;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public boolean isEnabled() {

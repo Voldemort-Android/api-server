@@ -1,4 +1,4 @@
-package server.persistence;
+package voldemort.writter.server.persistence;
 
 import java.io.IOException;
 import java.util.EnumSet;

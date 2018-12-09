@@ -1,8 +1,8 @@
-package server.persistence.entity;
+package voldemort.writter.server.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,17 +10,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
-@Table(name = "stories")
-public class Story implements Serializable {
+@Table(name = "comments")
+public class Comment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -28,28 +26,16 @@ public class Story implements Serializable {
     private Long id;
 	
 	@Column(nullable = false)
-    private String title;
-	
-	@Column(nullable = false)
     private String text;
 	
 	private int points = 0;
 	
-    private int views;
+	@ManyToOne(targetEntity = Story.class)
+	private Story story;
 	
-	@ManyToMany
-    @JoinTable(name = "authors",
-        joinColumns = @JoinColumn(name = "story_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonBackReference
-    Set<User> authors;
-	
-	@ManyToMany
-    @JoinTable(name = "story_tags",
-        joinColumns = @JoinColumn(name = "story_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @JsonBackReference
-    Set<Tag> tags;
+	@OneToMany
+    @JoinColumn(name = "nested_comments")
+    private Set<Comment> nestedComments;
 	
 	private boolean enabled = true;
 	
@@ -59,7 +45,7 @@ public class Story implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date modified;
     
-    public Story()
+    public Comment()
     {
     }
 
@@ -69,14 +55,6 @@ public class Story implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public String getText() {
@@ -95,28 +73,20 @@ public class Story implements Serializable {
 		this.points = points;
 	}
 
-	public int getViews() {
-		return views;
+	public Story getStory() {
+		return story;
 	}
 
-	public void setViews(int views) {
-		this.views = views;
+	public void setStory(Story story) {
+		this.story = story;
 	}
 
-	public Set<User> getAuthors() {
-		return authors;
+	public Set<Comment> getNestedComments() {
+		return nestedComments;
 	}
 
-	public void setAuthors(Set<User> authors) {
-		this.authors = authors;
-	}
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
+	public void setNestedComments(Set<Comment> nestedComments) {
+		this.nestedComments = nestedComments;
 	}
 
 	public boolean isEnabled() {
@@ -142,5 +112,4 @@ public class Story implements Serializable {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
-	
 }

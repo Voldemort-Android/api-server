@@ -12,6 +12,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import voldemort.writter.server.dto.security.UserAuthentication;
 import voldemort.writter.server.exception.RestException;
+import voldemort.writter.server.persistence.entity.User;
 
 @Service
 public class TokenAuthenticationService {
@@ -37,18 +38,16 @@ public class TokenAuthenticationService {
 		throw new RestException(HttpStatus.UNAUTHORIZED, "Authorization token is missing, expired, or invalid");
 	}
 
-	public String generateToken(String username, String password) {
-		if(username != null && password != null) {
-			UserAuthentication payload = new UserAuthentication();
-			payload.setId(0L);
-			payload.setUsername(username);
-			String jwt = Jwts.builder()
-					.claim("user", payload)
-					.signWith(SignatureAlgorithm.HS256, jwtSecret)
-					.compact();
-			return jwtPrefix + jwt;
-		}
-		throw new RestException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
+	public String generateToken(User user) {
+		UserAuthentication authentication = new UserAuthentication();
+		authentication.setId(user.getId());
+		authentication.setUsername(user.getUsername());
+		authentication.setEmail(user.getEmail());
+		String jwt = Jwts.builder()
+				.claim("user", authentication)
+				.signWith(SignatureAlgorithm.HS256, jwtSecret)
+				.compact();
+		return jwtPrefix + jwt;
 	}
 	
 	private UserAuthentication parseToken(String token) throws Exception {

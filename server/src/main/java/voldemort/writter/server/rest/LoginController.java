@@ -3,6 +3,7 @@ package voldemort.writter.server.rest;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -13,11 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.base.Objects;
 
+import voldemort.writter.server.security.TokenAuthenticationService;
+
 @RestController()
 @RequestMapping("/rest/login")
 public class LoginController {
 	
 	private final Map<String, String> dummyAccounts;
+	
+	@Autowired
+	private TokenAuthenticationService tokenAuthenticationService;	
 	
 	public LoginController() {
 		dummyAccounts = new HashMap<>();
@@ -36,8 +42,8 @@ public class LoginController {
 		}
 			
 		if (Objects.equal(dummyAccounts.get(username), password)) {
-			// TODO This should return the JWT to the Android app.
-			return new ResponseEntity<String>("Success", HttpStatus.OK);
+			String token = tokenAuthenticationService.generateToken(username, password);
+			return new ResponseEntity<String>(token, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<String>("Invalid username or password", HttpStatus.UNAUTHORIZED);

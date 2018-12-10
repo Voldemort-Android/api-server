@@ -1,6 +1,7 @@
 package voldemort.writter.server.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -10,7 +11,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import voldemort.writter.server.dto.security.UserAuthentication;
-import voldemort.writter.server.exception.user.UnauthorizedUserException;
+import voldemort.writter.server.exception.RestException;
 
 @Service
 public class TokenAuthenticationService {
@@ -33,7 +34,7 @@ public class TokenAuthenticationService {
 			e.printStackTrace();
 			// Do nothing...let it throw the exception at the end.
 		}
-		throw new UnauthorizedUserException("Authorization token is missing, expired, or invalid");
+		throw new RestException(HttpStatus.UNAUTHORIZED, "Authorization token is missing, expired, or invalid");
 	}
 
 	public String generateToken(String username, String password) {
@@ -47,7 +48,7 @@ public class TokenAuthenticationService {
 					.compact();
 			return jwtPrefix + jwt;
 		}
-		throw new UnauthorizedUserException("Invalid username or password.");
+		throw new RestException(HttpStatus.UNAUTHORIZED, "Invalid username or password.");
 	}
 	
 	private UserAuthentication parseToken(String token) throws Exception {

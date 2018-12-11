@@ -17,7 +17,7 @@ create table example_objects (id bigint not null auto_increment, optional varcha
 create table stories (id bigint not null auto_increment, created date, enabled bit not null, modified date, points integer not null, text varchar(255) not null, title varchar(255) not null, views integer not null, primary key (id)) engine=InnoDB;
 create table story_tags (story_id bigint not null, tag_id bigint not null, primary key (story_id, tag_id)) engine=InnoDB;
 create table tags (id bigint not null auto_increment, created date, enabled bit not null, modified date, name varchar(255) not null, primary key (id)) engine=InnoDB;
-create table users (id bigint not null auto_increment, created date, email varchar(255) not null, enabled bit not null, first_name varchar(255) not null, lastName varchar(255) not null, modified date, password varchar(255) not null, points integer not null, username varchar(255) not null, primary key (id)) engine=InnoDB;
+create table users (id bigint not null auto_increment, created date, email varchar(255) not null, enabled bit not null, first_name varchar(255) not null, last_name varchar(255) not null, modified date, password varchar(255) not null, points integer not null, username varchar(255) not null, primary key (id)) engine=InnoDB;
 alter table users add constraint UK_6dotkott2kjsp8vw4d0m25fb7 unique (email);
 alter table users add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username);
 alter table authors add constraint FK6g6ireq6qd4nxohq9ldidxfin foreign key (user_id) references users (id);

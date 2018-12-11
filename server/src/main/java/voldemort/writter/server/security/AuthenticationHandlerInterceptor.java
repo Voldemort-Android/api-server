@@ -21,8 +21,9 @@ public class AuthenticationHandlerInterceptor extends HandlerInterceptorAdapter 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws RestException {
 		
-		// Login endpoint does not need security check.
-		if (request.getRequestURL().toString().endsWith("login")) {
+		// Login and registration endpoints do not need security check.
+		String requestUrl = request.getRequestURL().toString();
+		if (requestUrl.endsWith("login") || requestUrl.endsWith("register")) {
 			return true;
 		}
 		

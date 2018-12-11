@@ -24,10 +24,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 	
-	@Column(nullable = false)
+	@Column(name="first_name", nullable = false)
     private String firstName;
 	
-	@Column(nullable = false)
+	@Column(name="last_name", nullable = false)
     private String lastName;
 	
 	@Column(nullable = false, unique = true)
@@ -50,8 +50,12 @@ public class User implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date modified;
     
-    public User()
-    {
+    public User() {
+    	
+    }
+    
+    public User(Long id) {
+    	this.id = id;
     }
     
 	public Long getId() {

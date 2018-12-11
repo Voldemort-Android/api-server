@@ -43,6 +43,8 @@ public class TokenAuthenticationService {
 		authentication.setId(user.getId());
 		authentication.setUsername(user.getUsername());
 		authentication.setEmail(user.getEmail());
+		authentication.setFirstName(user.getFirstName());
+		authentication.setLastName(user.getLastName());
 		String jwt = Jwts.builder()
 				.claim("user", authentication)
 				.signWith(SignatureAlgorithm.HS256, jwtSecret)

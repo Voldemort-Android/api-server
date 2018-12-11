@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import voldemort.writter.server.dto.security.UserAuthentication;
+import voldemort.writter.server.dto.security.AuthenticationDetails;
 import voldemort.writter.server.exception.RestException;
 import voldemort.writter.server.persistence.entity.User;
 
@@ -24,11 +24,11 @@ public class TokenAuthenticationService {
 	@Autowired
 	private ObjectMapper mapper;
 	
-	public boolean validateToken(String token) {
+	public AuthenticationDetails validateToken(String token) {
 		try {
-			UserAuthentication authentication = parseToken(token);
+			AuthenticationDetails authentication = parseToken(token);
 			if (authentication.getId() != null && !StringUtils.isEmpty(authentication.getUsername())) {
-				return true;
+				return authentication;
 			}
 		}
 		catch (Exception e) {
@@ -39,7 +39,7 @@ public class TokenAuthenticationService {
 	}
 
 	public String generateToken(User user) {
-		UserAuthentication authentication = new UserAuthentication();
+		AuthenticationDetails authentication = new AuthenticationDetails();
 		authentication.setId(user.getId());
 		authentication.setUsername(user.getUsername());
 		authentication.setEmail(user.getEmail());
@@ -50,7 +50,7 @@ public class TokenAuthenticationService {
 		return jwtPrefix + jwt;
 	}
 	
-	private UserAuthentication parseToken(String token) throws Exception {
+	private AuthenticationDetails parseToken(String token) throws Exception {
 		if (StringUtils.isEmpty(token)) {
 			throw new Exception("Null or empty token");
 		}
@@ -67,7 +67,7 @@ public class TokenAuthenticationService {
 		String serializedUser = mapper.writeValueAsString(user);
 		
 		// Deserialize the string into a user authentication object.
-		return mapper.readValue(serializedUser, UserAuthentication.class);
+		return mapper.readValue(serializedUser, AuthenticationDetails.class);
 	}
 	
 }

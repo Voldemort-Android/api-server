@@ -1,6 +1,6 @@
 package voldemort.writter.server.dto.security;
 
-public class UserAuthentication {
+public class AuthenticationDetails {
 	
 	private Long id;
 	

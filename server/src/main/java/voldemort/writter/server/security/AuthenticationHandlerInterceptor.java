@@ -3,9 +3,11 @@ package voldemort.writter.server.security;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import voldemort.writter.server.dto.security.AuthenticationDetails;
 import voldemort.writter.server.exception.RestException;
 
 public class AuthenticationHandlerInterceptor extends HandlerInterceptorAdapter {
@@ -29,7 +31,16 @@ public class AuthenticationHandlerInterceptor extends HandlerInterceptorAdapter 
 		}
 		
 		// Validate JWT.
-		return tokenAuthenticationService.validateToken(request.getHeader("Authorization"));
+		AuthenticationDetails details = tokenAuthenticationService.validateToken(request.getHeader("Authorization"));
+		
+		if (details == null) {
+			return false;
+		}
+		
+		// Set the authentication object in the security context.
+		SecurityContextHolder.getContext().setAuthentication(new UserAuthentication(details));
+		
+		return true;
 
 	}
 	

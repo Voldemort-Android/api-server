@@ -2,33 +2,25 @@ package voldemort.writter.server.persistence.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "comments")
-public class Comment implements Serializable {
+@Table(name = "recommendation")
+public class Recommendation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-	
-	@Column(nullable = false)
-    private String text;
-	
-	private int points = 0;
 	
 	@ManyToOne(targetEntity = Story.class)
 	private Story story;
@@ -36,9 +28,8 @@ public class Comment implements Serializable {
 	@ManyToOne(targetEntity = User.class)
 	private User user;
 	
-	@OneToMany
-    @JoinColumn(name = "nested_comments")
-    private Set<Comment> nestedComments;
+	@Column(nullable = false)
+	private double rating;
 	
 	private boolean enabled = true;
 	
@@ -48,32 +39,16 @@ public class Comment implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date modified;
     
-    public Comment()
+    public Recommendation()
     {
     }
-
+    
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public int getPoints() {
-		return points;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
 	}
 
 	public Story getStory() {
@@ -84,12 +59,20 @@ public class Comment implements Serializable {
 		this.story = story;
 	}
 
-	public Set<Comment> getNestedComments() {
-		return nestedComments;
+	public User getUser() {
+		return user;
 	}
 
-	public void setNestedComments(Set<Comment> nestedComments) {
-		this.nestedComments = nestedComments;
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 
 	public boolean isEnabled() {
@@ -115,4 +98,6 @@ public class Comment implements Serializable {
 	public void setModified(Date modified) {
 		this.modified = modified;
 	}
+    
+    
 }

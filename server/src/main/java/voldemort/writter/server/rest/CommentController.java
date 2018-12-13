@@ -35,7 +35,16 @@ public class CommentController {
 		return new ResponseEntity<>(comment, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{storyId}")
+	@GetMapping("/{commentId}")
+	public ResponseEntity<Comment> getComment(@PathVariable() Long commentId) {
+		Comment comment = commentDao.findOne(commentId);
+		if (comment != null) {
+			return new ResponseEntity<>(comment, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/story/{storyId}")
 	public ResponseEntity<List<Comment>> getCommentsByStory(@PathVariable() Long storyId) {
 		return new ResponseEntity<>(commentDao.findByStory(new Story(storyId)), HttpStatus.OK);
 	}

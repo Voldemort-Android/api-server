@@ -16,7 +16,7 @@ import voldemort.writter.server.persistence.entity.User;
 import voldemort.writter.server.security.AuthenticationUtils;
 
 @Repository
-public class CommentDaoImpl implements CommentDao {
+public class CommentDaoImpl2 implements CommentDao {
 	
 	@PersistenceContext
 	private EntityManager entityManager;

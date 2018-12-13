@@ -41,7 +41,7 @@ public class StoryDaoImpl implements StoryDao {
 
 	@Override
 	public List<Story> findByUser(User user) {
-		return entityManager.createQuery(liteQuery + " where s.author = :user order by s.created desc", Story.class)
+		return entityManager.createQuery(liteQuery + " where s.author=:user order by s.created desc", Story.class)
 				.setParameter("user", user)
 				.getResultList();
 	}

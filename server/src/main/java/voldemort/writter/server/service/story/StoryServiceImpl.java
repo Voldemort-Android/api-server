@@ -5,6 +5,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import voldemort.writter.server.exception.RestException;
 import voldemort.writter.server.persistence.dao.RatingDao;
@@ -26,14 +27,25 @@ public class StoryServiceImpl implements StoryService {
 	@Override
 	public Story createStory(Story story) {
 		
+		String title = story.getTitle();
+		String text = story.getText();
+		
+		// Data validation
+		if (StringUtils.isEmpty(title)) {
+			throw new RestException(HttpStatus.UNPROCESSABLE_ENTITY, "Title cannot be blank");
+		}
+		if (StringUtils.isEmpty(text)) {
+			throw new RestException(HttpStatus.UNPROCESSABLE_ENTITY, "Story text cannot be blank");
+		}
+		
 		Story newStory = new Story();
 		
 		// Set the author
 		story.setAuthor(AuthenticationUtils.getCurrentUser());
 		
 		// Copy info over from request object
-		newStory.setTitle(story.getTitle());
-		newStory.setText(story.getText());
+		newStory.setTitle(title);
+		newStory.setText(text);
 		
 		return storyDao.createStory(story);
 	}
@@ -54,9 +66,20 @@ public class StoryServiceImpl implements StoryService {
 			throw new RestException(HttpStatus.UNAUTHORIZED, "You do not have permission to update this story");
 		}
 		
+		String title = story.getTitle();
+		String text = story.getText();
+		
+		// Data validation
+		if (StringUtils.isEmpty(title)) {
+			throw new RestException(HttpStatus.UNPROCESSABLE_ENTITY, "Title cannot be blank");
+		}
+		if (StringUtils.isEmpty(text)) {
+			throw new RestException(HttpStatus.UNPROCESSABLE_ENTITY, "Story text cannot be blank");
+		}
+		
 		// Copy info over from request object
-		existingStory.setTitle(story.getTitle());
-		existingStory.setText(story.getText());
+		existingStory.setTitle(title);
+		existingStory.setText(text);
 		
 		return storyDao.updateStory(existingStory);
 	}

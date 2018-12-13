@@ -23,3 +23,5 @@
 hs_err_pid*
 
 server/src/main/resources/application-local\.properties
+
+server/\.gradle/4\.3/fileHashes/

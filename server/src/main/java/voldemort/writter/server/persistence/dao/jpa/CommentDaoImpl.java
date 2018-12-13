@@ -22,6 +22,7 @@ public class CommentDaoImpl implements CommentDao {
 	private EntityManager entityManager;
 	
 	@Override
+	@Transactional
 	public Comment createComment(Comment comment) {
 		
 		// Set this to null...ID will be automatically assigned.

@@ -41,13 +41,13 @@ public class CommentServiceImpl implements CommentService {
 		Comment newComment = new Comment();
 		
 		// Set the author
-		comment.setUser(AuthenticationUtils.getCurrentUser());
+		newComment.setUser(AuthenticationUtils.getCurrentUser());
 		
 		// Copy info over from request object
 		newComment.setText(comment.getText());
 		newComment.setStory(comment.getStory());
 		
-		return commentDao.createComment(comment);
+		return commentDao.createComment(newComment);
 	}
 
 	@Override

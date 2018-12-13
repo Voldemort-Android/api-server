@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import voldemort.writter.server.persistence.dao.RatingDao;
 import voldemort.writter.server.persistence.entity.Rating;
+import voldemort.writter.server.persistence.entity.Story;
 import voldemort.writter.server.persistence.entity.User;
 import voldemort.writter.server.security.AuthenticationUtils;
 
@@ -22,7 +23,7 @@ public class RatingDaoImpl implements RatingDao {
 	
 	@Override
 	@Transactional
-	public Rating addRating(Rating rating) {
+	public Rating createRating(Rating rating) {
 		
 		// Set this to null...ID will be automatically assigned.
 		rating.setId(null);
@@ -42,9 +43,31 @@ public class RatingDaoImpl implements RatingDao {
 
 	@Override
 	public List<Rating> findByUser(User user) {
-		return entityManager.createQuery("from Rating where user = :user", Rating.class)
-				.setParameter("unit", user)
+		return entityManager.createQuery("from Rating where user=:user", Rating.class)
+				.setParameter("user", user)
 				.getResultList();
+	}
+	
+	@Override
+	public Rating findByUserAndStory(User user, Story story) {
+		List<Rating> results = entityManager.createQuery("from Rating where user=:user and story=:story", Rating.class)
+				.setParameter("user", user)
+				.setParameter("story", story)
+				.getResultList();
+		
+		if (!results.isEmpty()) {
+			return results.get(0);
+		}
+		
+		return null;
+	}
+	
+	@Override
+	@Transactional
+	public Rating updateRating(Rating rating) {
+		// TODO Check if rating ID actually already exists.
+		rating.setModified(new Date());
+		return entityManager.merge(rating);
 	}
 
 }

@@ -5,8 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import voldemort.writter.server.exception.RestException;
+import voldemort.writter.server.persistence.dao.RatingDao;
 import voldemort.writter.server.persistence.dao.StoryDao;
+import voldemort.writter.server.persistence.entity.Rating;
 import voldemort.writter.server.persistence.entity.Story;
+import voldemort.writter.server.persistence.entity.User;
 import voldemort.writter.server.security.AuthenticationUtils;
 
 @Service
@@ -14,6 +17,9 @@ public class StoryServiceImpl implements StoryService {
 	
 	@Autowired
 	StoryDao storyDao;
+	
+	@Autowired
+	RatingDao ratingDao;
 
 	@Override
 	public Story createStory(Story story) {
@@ -45,7 +51,7 @@ public class StoryServiceImpl implements StoryService {
 		existingStory.setText(story.getText());
 		existingStory.setAuthor(story.getAuthor());
 		
-		return storyDao.update(existingStory);
+		return storyDao.updateStory(existingStory);
 	}
 	
 	@Override
@@ -55,8 +61,35 @@ public class StoryServiceImpl implements StoryService {
 			throw new RestException(HttpStatus.BAD_REQUEST, "Story ID " + id + " does not exist.");
 		}
 		story.setViews(story.getViews() + 1);
-		storyDao.update(story);
+		storyDao.updateStory(story);
 		return story.getViews();
+	}
+	
+	@Override
+	public Rating rateStory(Long id, Double score) {
+		
+		User user = AuthenticationUtils.getCurrentUser();
+		Story story = new Story(id);
+		
+		// Check if a rating already exists from the user for the story.
+		Rating rating = ratingDao.findByUserAndStory(user, story);
+		
+		// Update the rating if it already exists.
+		if (rating != null) {
+			rating.setRating(score);
+			ratingDao.updateRating(rating);
+		}
+		
+		// Else create a new rating
+		else {
+			rating = new Rating();
+			rating.setUser(user);
+			rating.setStory(story);
+			rating.setRating(score);
+			ratingDao.createRating(rating);
+		}
+		
+		return rating;
 	}
 	
 }

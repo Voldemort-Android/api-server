@@ -62,7 +62,8 @@ public class StoryDaoImpl implements StoryDao {
 
 	@Override
 	@Transactional
-	public Story update(Story story) {
+	public Story updateStory(Story story) {
+		// TODO Check if story ID actually already exists.
 		story.setModified(new Date());
 		return entityManager.merge(story);
 	}

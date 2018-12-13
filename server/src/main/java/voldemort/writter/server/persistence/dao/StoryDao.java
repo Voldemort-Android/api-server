@@ -17,6 +17,6 @@ public interface StoryDao {
 	
 	List<Story> findByPage(int page, int limit);
 	
-	Story update(Story story);
+	Story updateStory(Story story);
 
 }

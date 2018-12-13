@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import voldemort.writter.server.persistence.dao.StoryDao;
+import voldemort.writter.server.persistence.entity.Rating;
 import voldemort.writter.server.persistence.entity.Story;
 import voldemort.writter.server.persistence.entity.User;
 import voldemort.writter.server.security.AuthenticationUtils;
@@ -72,6 +73,12 @@ public class StoryController {
 			return new ResponseEntity<>(views, HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Unknow error", HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+	
+	@PostMapping("/{storyId}/rate/{score}")
+	public ResponseEntity<Object> rateStory(@PathVariable() Long storyId, @PathVariable() Double score) {
+		Rating rating = storyService.rateStory(storyId, score);
+		return new ResponseEntity<>(rating, HttpStatus.OK);
 	}
 
 }

@@ -58,6 +58,10 @@ public class Story implements Serializable {
     	
     }
     
+    public Story(Long id) {
+    	this.id = id;
+    }
+    
     public Story(Long id, String title, int views, Date created, Date modified, User author) {
 		this.id = id;
 		this.title = title;

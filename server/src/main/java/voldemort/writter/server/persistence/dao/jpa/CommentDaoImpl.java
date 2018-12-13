@@ -36,8 +36,7 @@ public class CommentDaoImpl implements CommentDao {
 		// Set the user
 		comment.setUser(AuthenticationUtils.getCurrentUser());
 		
-		entityManager.merge(comment);
-		return comment;
+		return entityManager.merge(comment);
 	}
 
 	@Override

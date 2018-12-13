@@ -50,7 +50,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 			user.setLastName(formatName(lastName));
 			
 			// TODO Save the user to the database.
-			userDao.createUser(user);
+			user = userDao.createUser(user);
 			
 			return tokenAuthenticationService.generateToken(user);
 		}

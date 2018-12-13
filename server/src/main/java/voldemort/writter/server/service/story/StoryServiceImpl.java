@@ -107,19 +107,16 @@ public class StoryServiceImpl implements StoryService {
 		// Update the rating if it already exists.
 		if (rating != null) {
 			rating.setRating(score);
-			ratingDao.updateRating(rating);
+			return ratingDao.updateRating(rating);
 		}
 		
 		// Else create a new rating
-		else {
-			rating = new Rating();
-			rating.setUser(user);
-			rating.setStory(story);
-			rating.setRating(score);
-			ratingDao.createRating(rating);
-		}
+		rating = new Rating();
+		rating.setUser(user);
+		rating.setStory(story);
+		rating.setRating(score);
+		return ratingDao.createRating(rating);
 		
-		return rating;
 	}
 	
 }

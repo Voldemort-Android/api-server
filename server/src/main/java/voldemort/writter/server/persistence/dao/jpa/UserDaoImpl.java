@@ -30,8 +30,7 @@ public class UserDaoImpl implements UserDao {
 		user.setCreated(now);
 		user.setModified(now);
 		
-		entityManager.merge(user);
-		return user;
+		return entityManager.merge(user);
 	}
 	
 	@Override

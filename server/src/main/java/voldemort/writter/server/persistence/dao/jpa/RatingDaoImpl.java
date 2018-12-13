@@ -36,8 +36,7 @@ public class RatingDaoImpl implements RatingDao {
 		// Set the user
 		rating.setUser(AuthenticationUtils.getCurrentUser());
 		
-		entityManager.merge(rating);
-		return rating;
+		return entityManager.merge(rating);
 		
 	}
 

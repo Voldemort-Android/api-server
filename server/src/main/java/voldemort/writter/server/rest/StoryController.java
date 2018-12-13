@@ -32,8 +32,8 @@ public class StoryController {
 	
 	@PutMapping()
 	public ResponseEntity<Story> createStory(@RequestBody Story story) {
-		// TODO Implement this
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		story = storyService.createStory(story);
+		return new ResponseEntity<>(story, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{storyId}")
@@ -64,6 +64,12 @@ public class StoryController {
 	@GetMapping("/page/{page}/limit/{limit}")
 	public ResponseEntity<List<Story>> getPaginatedStories(@PathVariable() int page, @PathVariable() int limit) {
 		return new ResponseEntity<>(storyDao.findByPage(page, limit), HttpStatus.OK);
+	}
+	
+	@PostMapping()
+	public ResponseEntity<Story> updateStory(@RequestBody Story story) {
+		story = storyService.updateStory(story);
+		return new ResponseEntity<>(story, HttpStatus.OK);
 	}
 	
 	// Very bad way to do this, but oh wells.

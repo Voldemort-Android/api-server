@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "comments")
 public class Comment implements Serializable {
@@ -29,9 +31,11 @@ public class Comment implements Serializable {
 	private int points = 0;
 	
 	@ManyToOne(targetEntity = Story.class)
+	@JsonIgnoreProperties({"title", "text", "points", "views", "author", "enabled", "created", "modified"})
 	private Story story;
 	
 	@ManyToOne(targetEntity = User.class)
+	@JsonIgnoreProperties({"enabled", "created", "modified"})
 	private User user;
 	
 	@OneToMany

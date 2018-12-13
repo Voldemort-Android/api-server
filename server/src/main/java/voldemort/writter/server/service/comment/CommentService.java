@@ -6,4 +6,6 @@ public interface CommentService {
 	
 	Comment addComment(Comment comment);
 	
+	Comment editComment(Comment comment);
+
 }

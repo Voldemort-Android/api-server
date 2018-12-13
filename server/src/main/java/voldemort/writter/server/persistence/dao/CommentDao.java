@@ -8,10 +8,14 @@ import voldemort.writter.server.persistence.entity.User;
 
 public interface CommentDao {
 
-	Comment addComment(Comment comment);
+	Comment createComment(Comment comment);
+	
+	Comment findOne(Long id);
 	
 	List<Comment> findByStory(Story story);
 	
 	List<Comment> findByUser(User user);
+
+	Comment updateComment(Comment comment);
 	
 }

@@ -44,10 +44,6 @@ public class Comment implements Serializable {
     private Date created;
 	
     private Date modified;
-    
-    public Comment()
-    {
-    }
 
 	public User getUser() {
 		return user;
@@ -87,6 +83,14 @@ public class Comment implements Serializable {
 
 	public void setStory(Story story) {
 		this.story = story;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Set<Comment> getNestedComments() {

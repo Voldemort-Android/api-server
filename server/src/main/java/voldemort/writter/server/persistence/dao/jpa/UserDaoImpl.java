@@ -37,7 +37,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User findByUsername(String username) {
 		try {
-			return entityManager.createQuery("from User where username = :username", User.class)
+			return entityManager.createQuery("from User where username=:username", User.class)
 					.setParameter("username", username)
 					.getSingleResult();
 		}
@@ -49,7 +49,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User findByEmail(String email) {
 		try {
-			return entityManager.createQuery("from User where email = :email", User.class)
+			return entityManager.createQuery("from User where email=:email", User.class)
 					.setParameter("email", email)
 					.getSingleResult();
 		}

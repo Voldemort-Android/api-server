@@ -42,8 +42,8 @@ public class CommentController {
 	
 	@PostMapping()
 	public ResponseEntity<Comment> updateComment(@RequestBody Comment comment) {
-		// TODO Implement this
-		return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		comment = commentService.editComment(comment);
+		return new ResponseEntity<>(comment, HttpStatus.OK);
 	}
 	
 }

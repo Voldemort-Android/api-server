@@ -34,7 +34,7 @@ public class LoginController {
 	public ResponseEntity<String> login(@RequestBody String token) {
 		try {
 			tokenAuthenticationService.validateToken(token);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(token, HttpStatus.OK);
 		}
 		catch (RestException e) {
 			return new ResponseEntity<>("Authorization token is missing, expired, or invalid", HttpStatus.UNAUTHORIZED);

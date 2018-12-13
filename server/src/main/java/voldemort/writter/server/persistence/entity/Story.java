@@ -42,7 +42,7 @@ public class Story implements Serializable {
 	
 	@ManyToOne(targetEntity = User.class)
 	@JsonIgnoreProperties({"enabled", "created", "modified"})
-	User author;
+	private User author;
 	
 	@Column(nullable = false)
 	@JsonIgnore

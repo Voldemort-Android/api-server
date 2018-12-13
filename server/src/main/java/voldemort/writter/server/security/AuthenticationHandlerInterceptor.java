@@ -23,7 +23,7 @@ public class AuthenticationHandlerInterceptor extends HandlerInterceptorAdapter 
 		
 		// Login and registration endpoints do not need security check.
 		String requestUrl = request.getRequestURL().toString();
-		if (requestUrl.endsWith("login") || requestUrl.endsWith("register")) {
+		if (requestUrl.contains("/rest/login") || requestUrl.contains("/rest/register")) {
 			return true;
 		}
 		

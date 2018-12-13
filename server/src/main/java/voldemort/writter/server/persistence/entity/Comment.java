@@ -13,8 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "comments")
@@ -42,10 +40,9 @@ public class Comment implements Serializable {
 	
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
     private Date created;
-
-    @Temporal(TemporalType.DATE)
+	
     private Date modified;
     
     public Comment()

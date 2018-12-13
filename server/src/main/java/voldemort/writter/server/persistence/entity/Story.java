@@ -1,7 +1,6 @@
 package voldemort.writter.server.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Set;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,14 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Entity
 @Table(name = "stories")
@@ -30,38 +29,43 @@ public class Story implements Serializable {
 	@Column(nullable = false)
     private String title;
 	
+	@Lob
 	@Column(nullable = false)
+	@JsonInclude(Include.NON_NULL)
     private String text;
 	
+	@Column(nullable = false)
 	private int points = 0;
 	
-    private int views;
+	@Column(nullable = false)
+    private int views = 0;
 	
-	@ManyToMany
-    @JoinTable(name = "authors",
-        joinColumns = @JoinColumn(name = "story_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonBackReference("authors")
-    Set<User> authors;
+	@ManyToOne(targetEntity = User.class)
+	@JsonIgnoreProperties({"enabled", "created", "modified"})
+	User author;
 	
-	@ManyToMany
-    @JoinTable(name = "story_tags",
-        joinColumns = @JoinColumn(name = "story_id"),
-        inverseJoinColumns = @JoinColumn(name = "tag_id"))
-	@JsonBackReference("tags")
-    Set<Tag> tags;
-	
+	@Column(nullable = false)
+	@JsonIgnore
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
     private Date created;
 
-    @Temporal(TemporalType.DATE)
+	@Column(nullable = false)
     private Date modified;
-    
-    public Story()
-    {
+
+    public Story() {
+    	
     }
+    
+    public Story(Long id, String title, int views, Date created, Date modified) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.views = views;
+		this.created = created;
+		this.modified = modified;
+	}
 
 	public Long getId() {
 		return id;
@@ -103,20 +107,12 @@ public class Story implements Serializable {
 		this.views = views;
 	}
 
-	public Set<User> getAuthors() {
-		return authors;
+	public User getAuthor() {
+		return author;
 	}
 
-	public void setAuthors(Set<User> authors) {
-		this.authors = authors;
-	}
-
-	public Set<Tag> getTags() {
-		return tags;
-	}
-
-	public void setTags(Set<Tag> tags) {
-		this.tags = tags;
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	public boolean isEnabled() {

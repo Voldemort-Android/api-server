@@ -10,8 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "recommendation")
@@ -33,15 +31,9 @@ public class Recommendation implements Serializable {
 	
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
     private Date created;
 
-    @Temporal(TemporalType.DATE)
     private Date modified;
-    
-    public Recommendation()
-    {
-    }
     
 	public Long getId() {
 		return id;

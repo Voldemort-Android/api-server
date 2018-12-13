@@ -9,11 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import voldemort.writter.server.persistence.entity.Story;
-import voldemort.writter.server.persistence.entity.User;
 
 @Entity
 @Table(name = "ratings")
@@ -34,10 +29,8 @@ public class Rating implements Serializable {
 	
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
     private Date created;
-
-    @Temporal(TemporalType.DATE)
+    
     private Date modified;
 
 	public Long getId() {

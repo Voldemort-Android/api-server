@@ -5,5 +5,5 @@ import voldemort.writter.server.persistence.entity.Rating;
 public interface RatingService {
 
 	Rating addRating(Rating rating);
-
+	
 }

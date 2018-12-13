@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "tags")
@@ -24,17 +22,12 @@ public class Tag implements Serializable {
 	@Column(nullable = false)
     private String name;
 	
+	@Column(nullable = false)
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
     private Date created;
 
-    @Temporal(TemporalType.DATE)
     private Date modified;
-    
-    public Tag()
-    {
-    }
 
 	public Long getId() {
 		return id;

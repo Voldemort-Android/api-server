@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -37,17 +35,16 @@ public class User implements Serializable {
     private String username;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 60)
     private String password;
 	
 	private int points = 0;
 	
 	private boolean enabled = true;
 	
-	@Temporal(TemporalType.DATE)
+	@Column(nullable = false)
     private Date created;
 
-    @Temporal(TemporalType.DATE)
     private Date modified;
     
     public User() {

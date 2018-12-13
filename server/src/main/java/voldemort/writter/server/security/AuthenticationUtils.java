@@ -1,6 +1,7 @@
 package voldemort.writter.server.security;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import voldemort.writter.server.dto.security.AuthenticationDetails;
 
@@ -23,6 +24,11 @@ public final class AuthenticationUtils {
 			return extractDetails((UserAuthentication) authentication);
 		}
 		return null;
+	}
+	
+	public static AuthenticationDetails getDetails() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		return extractDetails(authentication);
 	}
 	
 }

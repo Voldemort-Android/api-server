@@ -41,14 +41,14 @@ public class Story implements Serializable {
     @JoinTable(name = "authors",
         joinColumns = @JoinColumn(name = "story_id"),
         inverseJoinColumns = @JoinColumn(name = "user_id"))
-    @JsonBackReference
+    @JsonBackReference("authors")
     Set<User> authors;
 	
 	@ManyToMany
     @JoinTable(name = "story_tags",
         joinColumns = @JoinColumn(name = "story_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    @JsonBackReference
+	@JsonBackReference("tags")
     Set<Tag> tags;
 	
 	private boolean enabled = true;

@@ -1,5 +1,7 @@
 package voldemort.writter.server.service.story;
 
+import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,13 +45,18 @@ public class StoryServiceImpl implements StoryService {
 		Story existingStory = storyDao.findOne(id);
 		
 		if (existingStory == null) {
-			throw new RestException(HttpStatus.BAD_REQUEST, "Story ID " + id + " does not exist.");
+			throw new RestException(HttpStatus.BAD_REQUEST, "Story ID " + id + " does not exist");
+		}
+		
+		// Only the original author of the story can update it
+		User user = AuthenticationUtils.getCurrentUser();
+		if (!Objects.equals(user.getId(), existingStory.getAuthor().getId())) {
+			throw new RestException(HttpStatus.UNAUTHORIZED, "You do not have permission to update this story");
 		}
 		
 		// Copy info over from request object
 		existingStory.setTitle(story.getTitle());
 		existingStory.setText(story.getText());
-		existingStory.setAuthor(story.getAuthor());
 		
 		return storyDao.updateStory(existingStory);
 	}
@@ -58,7 +65,7 @@ public class StoryServiceImpl implements StoryService {
 	public Integer incrementViews(Long id) {
 		Story story = storyDao.findOne(id);
 		if (story == null) {
-			throw new RestException(HttpStatus.BAD_REQUEST, "Story ID " + id + " does not exist.");
+			throw new RestException(HttpStatus.BAD_REQUEST, "Story ID " + id + " does not exist");
 		}
 		story.setViews(story.getViews() + 1);
 		storyDao.updateStory(story);

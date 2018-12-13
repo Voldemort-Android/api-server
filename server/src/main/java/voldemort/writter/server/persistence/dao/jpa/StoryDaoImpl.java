@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import voldemort.writter.server.persistence.dao.StoryDao;
 import voldemort.writter.server.persistence.entity.Story;
-import voldemort.writter.server.persistence.entity.Tag;
 import voldemort.writter.server.persistence.entity.User;
 
 @Repository
 public class StoryDaoImpl implements StoryDao {
+	
+	private final String liteQuery = 
+			"Select new Story(id, title, views, created, modified, author) from Story s";
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -39,25 +41,20 @@ public class StoryDaoImpl implements StoryDao {
 
 	@Override
 	public List<Story> findByUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery(liteQuery + " where s.author = :user order by s.created desc", Story.class)
+				.setParameter("user", user)
+				.getResultList();
 	}
 
 	@Override
-	public List<Story> findByTag(Tag tag) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<?> findAll() {
-		// FIXME Fix this
-		return null;
+	public List<Story> findAll() {
+		return entityManager.createQuery(liteQuery, Story.class)
+				.getResultList();
 	}
 	
 	@Override
 	public List<Story> findByPage(int page, int limit) {
-		return entityManager.createQuery("from Story order by id", Story.class)
+		return entityManager.createQuery(liteQuery + " order by s.created desc", Story.class)
 				.setFirstResult((page - 1) * limit)
 				.setMaxResults(limit)
 				.getResultList();

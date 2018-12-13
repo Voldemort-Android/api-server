@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import voldemort.writter.server.persistence.dao.StoryDao;
 import voldemort.writter.server.persistence.entity.Story;
+import voldemort.writter.server.persistence.entity.User;
+import voldemort.writter.server.security.AuthenticationUtils;
 import voldemort.writter.server.service.story.StoryService;
 
 @RestController()
@@ -41,8 +43,19 @@ public class StoryController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
+	@GetMapping("/user")
+	public ResponseEntity<List<Story>> getStoryByUser() {
+		User user = AuthenticationUtils.getCurrentUser();
+		return new ResponseEntity<List<Story>>(storyDao.findByUser(user), HttpStatus.OK);
+	}
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<Story>> getStoryByUser(@PathVariable() Long userId) {
+		return new ResponseEntity<List<Story>>(storyDao.findByUser(new User(userId)), HttpStatus.OK);
+	}
+	
 	@GetMapping()
-	public ResponseEntity<List<?>> getAllStories() {
+	public ResponseEntity<List<Story>> getAllStories() {
 		return new ResponseEntity<>(storyDao.findAll(), HttpStatus.OK);
 	}
 	

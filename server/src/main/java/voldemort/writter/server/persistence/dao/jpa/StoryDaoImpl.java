@@ -55,6 +55,7 @@ public class StoryDaoImpl implements StoryDao {
 	}
 	
 	@Override
+<<<<<<< HEAD
 	public List<Story> findAllRecommended(User user){
 		return entityManager.createQuery("from Recommendation where user=:user order by rating desc", Recommendation.class)
                 .setParameter("user", user)
@@ -65,6 +66,8 @@ public class StoryDaoImpl implements StoryDao {
 	}
 	
 	@Override
+=======
+>>>>>>> 8165094953858f604669bd304b476f5f0e619a22
 	public List<Story> findByPage(int page, int limit) {
 		return entityManager.createQuery(liteQuery + " order by s.created desc", Story.class)
 				.setFirstResult((page - 1) * limit)

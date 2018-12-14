@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import voldemort.writter.server.persistence.dao.RecommendationDao;
 import voldemort.writter.server.persistence.dao.StoryDao;
 import voldemort.writter.server.persistence.entity.Rating;
 import voldemort.writter.server.persistence.entity.Story;
@@ -29,6 +30,9 @@ public class StoryController {
 	
 	@Autowired
 	StoryService storyService;
+	
+	@Autowired
+	RecommendationDao recommendationDao;
 	
 	@PutMapping()
 	public ResponseEntity<Story> createStory(@RequestBody Story story) {
@@ -58,7 +62,7 @@ public class StoryController {
 	
 	@GetMapping("/recommended/{userId}")
 	public ResponseEntity<List<Story>> getRecommendedStory(@PathVariable() Long userId) {
-		return new ResponseEntity<List<Story>>(storyDao.findAllRecommended(new User(userId)), HttpStatus.OK);
+		return new ResponseEntity<>(recommendationDao.findAllRecommended(new User(userId)), HttpStatus.OK);
 	}
 	
 	@GetMapping()
@@ -92,5 +96,5 @@ public class StoryController {
 		Rating rating = storyService.rateStory(storyId, score);
 		return new ResponseEntity<>(rating, HttpStatus.OK);
 	}
-
+	
 }

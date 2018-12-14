@@ -41,7 +41,31 @@ public class RatingController {
 	RatingDao ratingDao;
 	
 	
+	@PutMapping()
+	public ResponseEntity<Rating> addRating(@RequestBody Rating rating) {
+		comment = ratingService.addComment(rating);
+		return new ResponseEntity<>(rating, HttpStatus.OK);
+	}
 	
+	@GetMapping("/{ratingId}")
+	public ResponseEntity<Rating> getRating(@PathVariable() Long ratingId() {
+		Comment comment = ratingDao.findOne(commentId);
+		if (comment != null) {
+			return new ResponseEntity<>(rating, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/story/{storyId}")
+	public ResponseEntity<List<Comment>> getRatingByStory(@PathVariable() Long storyId) {
+		return new ResponseEntity<>(RatingDao.findByStory(new Story(storyId)), HttpStatus.OK);
+	}
+	
+	@PostMapping()
+	public ResponseEntity<Comment> updateComment(@RequestBody Comment comment) {
+		comment = commentService.editComment(comment);
+		return new ResponseEntity<>(comment, HttpStatus.OK);
+	}
 	
 	
 }

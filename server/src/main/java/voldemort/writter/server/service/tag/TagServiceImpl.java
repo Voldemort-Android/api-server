@@ -1,4 +1,4 @@
-package tag;
+package voldemort.writter.server.service.tag;
 
 import java.util.Objects;
 

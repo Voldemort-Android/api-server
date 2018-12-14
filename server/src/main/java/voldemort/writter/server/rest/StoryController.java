@@ -50,18 +50,24 @@ public class StoryController {
 	}
 	
 	@GetMapping("/user")
-	public ResponseEntity<List<Story>> getStoryByUser() {
+	public ResponseEntity<List<Story>> getStoriesForUser() {
 		User user = AuthenticationUtils.getCurrentUser();
 		return new ResponseEntity<List<Story>>(storyDao.findByUser(user), HttpStatus.OK);
 	}
 	
 	@GetMapping("/user/{userId}")
-	public ResponseEntity<List<Story>> getStoryByUser(@PathVariable() Long userId) {
+	public ResponseEntity<List<Story>> getStoriesByUser(@PathVariable() Long userId) {
 		return new ResponseEntity<List<Story>>(storyDao.findByUser(new User(userId)), HttpStatus.OK);
 	}
 	
+	@GetMapping("/recommended")
+	public ResponseEntity<List<Story>> getRecommendedStories() {
+		User user = AuthenticationUtils.getCurrentUser();
+		return new ResponseEntity<>(recommendationDao.findAllRecommended(new User(user.getId())), HttpStatus.OK);
+	}
+	
 	@GetMapping("/recommended/{userId}")
-	public ResponseEntity<List<Story>> getRecommendedStory(@PathVariable() Long userId) {
+	public ResponseEntity<List<Story>> getRecommendedStories(@PathVariable() Long userId) {
 		return new ResponseEntity<>(recommendationDao.findAllRecommended(new User(userId)), HttpStatus.OK);
 	}
 	

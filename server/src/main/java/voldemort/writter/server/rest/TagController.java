@@ -2,6 +2,7 @@ package voldemort.writter.server.rest;
 
 import java.util.List;
 
+import org.hibernate.validator.constraints.SafeHtml.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,9 +39,9 @@ public class TagController {
 	TagDao tagDao;
 	
 	@PutMapping()
-	public ResponseEntity<Story> createStory(@RequestBody Story story) {
-		story = storyService.createStory(story);
-		return new ResponseEntity<>(story, HttpStatus.OK);
+	public ResponseEntity<Tag> createTag(@RequestBody Tag tag) {
+		story = storyService.createTag(tag);
+		return new ResponseEntity<>(tag, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{storyId}")
@@ -52,10 +53,10 @@ public class TagController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping("/user")
-	public ResponseEntity<List<Story>> getStoriesForUser() {
+	@GetMapping()
+	public ResponseEntity<List<Tag>> getTagsr() {
 		User user = AuthenticationUtils.getCurrentUser();
-		return new ResponseEntity<List<Story>>(storyDao.findByUser(user), HttpStatus.OK);
+		return new ResponseEntity<List<Story>>(tagDao.findByUser(user), HttpStatus.OK);
 	}
 	
 	@GetMapping("/user/{userId}")
@@ -64,39 +65,19 @@ public class TagController {
 	}
 	
 	@GetMapping("/recommended")
-	public ResponseEntity<List<Story>> getRecommendedStories() {
+	public ResponseEntity<List<Tag>> getRecommendedTags() {
 		User user = AuthenticationUtils.getCurrentUser();
-		return new ResponseEntity<>(recommendationDao.findAllRecommended(new User(user.getId())), HttpStatus.OK);
+		return new ResponseEntity<>(recommendationDao.findAllRecommended(new Tag(tag.getId())), HttpStatus.OK);
 	}
 	
-	@GetMapping("/recommended/{userId}")
-	public ResponseEntity<List<Story>> getRecommendedStories(@PathVariable() Long userId) {
-		return new ResponseEntity<>(recommendationDao.findAllRecommended(new User(userId)), HttpStatus.OK);
-	}
+
 	
 	@GetMapping()
 	public ResponseEntity<List<Story>> getAllStories() {
 		return new ResponseEntity<>(storyDao.findAll(), HttpStatus.OK);
 	}
 	
-	@GetMapping("/page/{page}/limit/{limit}")
-	public ResponseEntity<List<Story>> getPaginatedStories(@PathVariable() int page, @PathVariable() int limit) {
-		return new ResponseEntity<>(storyDao.findByPage(page, limit), HttpStatus.OK);
-	}
 	
-	@PostMapping()
-	public ResponseEntity<Story> updateStory(@RequestBody Story story) {
-		story = storyService.updateStory(story);
-		return new ResponseEntity<>(story, HttpStatus.OK);
-	}
 	
-	// Very bad way to do this, but oh wells.
-	@PostMapping("/update-views/{storyId}")
-	public ResponseEntity<Object> incrementViews(@PathVariable() Long storyId) {
-		Integer views = storyService.incrementViews(storyId);
-		if (views != null) {
-			return new ResponseEntity<>(views, HttpStatus.OK);
-		}
-		return new ResponseEntity<>("Unknow error", HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+
 }

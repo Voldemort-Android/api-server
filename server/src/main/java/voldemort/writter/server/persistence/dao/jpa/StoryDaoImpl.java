@@ -56,9 +56,7 @@ public class StoryDaoImpl implements StoryDao {
 	
 	@Override
 	public List<Story> findAllRecommended(User user){
-		String sqlString = "Select s.id from stories s"; 
-		sqlString += " LEFT JOIN recommendation r on s.id = r.story_id WHERE r.user_id=:user";
-		return entityManager.createQuery("from Recommendation where user=:user", Recommendation.class)
+		return entityManager.createQuery("from Recommendation where user=:user order by rating desc", Recommendation.class)
                 .setParameter("user", user)
                 .getResultList()
                 .stream()

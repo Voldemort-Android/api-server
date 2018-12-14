@@ -56,6 +56,11 @@ public class StoryController {
 		return new ResponseEntity<List<Story>>(storyDao.findByUser(new User(userId)), HttpStatus.OK);
 	}
 	
+	@GetMapping("/recommended/{userId}")
+	public ResponseEntity<List<Story>> getRecommendedStory(@PathVariable() Long userId) {
+		return new ResponseEntity<List<Story>>(storyDao.findAllRecommended(new User(userId)), HttpStatus.OK);
+	}
+	
 	@GetMapping()
 	public ResponseEntity<List<Story>> getAllStories() {
 		return new ResponseEntity<>(storyDao.findAll(), HttpStatus.OK);

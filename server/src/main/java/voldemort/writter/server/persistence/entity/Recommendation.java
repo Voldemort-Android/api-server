@@ -35,6 +35,19 @@ public class Recommendation implements Serializable {
 
     private Date modified;
     
+    public Recommendation() {};
+    
+	public Recommendation(Long id, Story story, User user, double rating, boolean enabled, Date created,
+			Date modified) {
+		this.id = id;
+		this.story = story;
+		this.user = user;
+		this.rating = rating;
+		this.enabled = enabled;
+		this.created = created;
+		this.modified = modified;
+	}
+
 	public Long getId() {
 		return id;
 	}

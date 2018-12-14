@@ -15,6 +15,8 @@ public interface StoryDao {
 	
 	List<Story> findAll();
 	
+	List<Story> findAllRecommended(User user);
+	
 	List<Story> findByPage(int page, int limit);
 	
 	Story updateStory(Story story);

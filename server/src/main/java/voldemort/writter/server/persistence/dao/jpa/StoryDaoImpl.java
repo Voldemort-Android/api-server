@@ -2,7 +2,6 @@ package voldemort.writter.server.persistence.dao.jpa;
 
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import voldemort.writter.server.persistence.dao.StoryDao;
 import voldemort.writter.server.persistence.entity.Story;
 import voldemort.writter.server.persistence.entity.User;
-import voldemort.writter.server.persistence.entity.Recommendation;
 
 @Repository
 public class StoryDaoImpl implements StoryDao {
@@ -55,19 +53,6 @@ public class StoryDaoImpl implements StoryDao {
 	}
 	
 	@Override
-<<<<<<< HEAD
-	public List<Story> findAllRecommended(User user){
-		return entityManager.createQuery("from Recommendation where user=:user order by rating desc", Recommendation.class)
-                .setParameter("user", user)
-                .getResultList()
-                .stream()
-                .map(r -> r.getStory())
-                .collect(Collectors.toList());
-	}
-	
-	@Override
-=======
->>>>>>> 8165094953858f604669bd304b476f5f0e619a22
 	public List<Story> findByPage(int page, int limit) {
 		return entityManager.createQuery(liteQuery + " order by s.created desc", Story.class)
 				.setFirstResult((page - 1) * limit)
